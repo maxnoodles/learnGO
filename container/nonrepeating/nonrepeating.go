@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 func noneRepeating(s string) int {
-	lastIndexMap := make(map[byte]int)
+	lastIndexMap := make(map[rune]int)
 	start, maxLen := 0, 0
-	for i, ch := range []byte(s) {
+	for i, ch := range []rune(s) {
 		if lastI, ok := lastIndexMap[ch]; ok && lastI >= start {
 			start = lastI + 1
 		}

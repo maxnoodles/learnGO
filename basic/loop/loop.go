@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func convertToBin(n int) string {
@@ -20,7 +22,11 @@ func printFile(filename string) {
 	if err != nil {
 		panic(err)
 	}
-	scanner := bufio.NewScanner(file)
+	printFileContent(file)
+}
+
+func printFileContent(reader io.Reader) {
+	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
@@ -37,5 +43,10 @@ func main() {
 		convertToBin(13),
 	)
 	printFile("abc.txt")
-	forever()
+
+	s := `aaa
+bbb
+ccc`
+	printFileContent(strings.NewReader(s))
+	//forever()
 }

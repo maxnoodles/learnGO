@@ -25,7 +25,6 @@ var xinzuoRe = regexp.MustCompile(`<div.*?>(.*?)座</div>`)
 // 获取用户的详细资料
 func ParseProfile(contents []byte, name string) engine.ParseResult {
 	profile := model.Profile{}
-	profile.Name = name
 	age, err := strconv.Atoi(extractString(contents, ageRe))
 	if err == nil {
 		profile.Age = age

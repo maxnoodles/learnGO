@@ -9,12 +9,13 @@ import (
 
 var ageRe = regexp.MustCompile(`<div.*?>(\d+)岁</div>`)
 var marriageRe = regexp.MustCompile(
-	`<div.*?>(未婚|离异|丧偶|)</div>`)
+	`<div.*?>(未婚|离异|丧偶)</div>`)
 var heightRe = regexp.MustCompile(`<div.*?>(\d+)cm</div>`)
 var weightRe = regexp.MustCompile(`<div.*?>(\d+)kg</div>`)
 var incomeRe = regexp.MustCompile(`<div.*?>月收入:(.*?)</div>`)
 var genderRe = regexp.MustCompile(`<a.*?>.*?([男女]).*?</a>`)
-var xinzuoRe = regexp.MustCompile(`<div.*?>(.*?)座</div>`)
+var xinzuoRe = regexp.MustCompile(`<div.*?>([^>]+座).*?</div>`)
+var name = regexp.MustCompile(`<h1.*?>(.*?)</h1>`)
 
 //var educationRe = regexp.MustCompile(`<div.*?>(\d+)cm</div>`)
 //var occupationRe = regexp.MustCompile(`<div.*?>(\d+)cm</div>`)
@@ -23,14 +24,12 @@ var xinzuoRe = regexp.MustCompile(`<div.*?>(.*?)座</div>`)
 //var carRe = regexp.MustCompile(`<div.*?>(\d+)cm</div>`)
 
 // 获取用户的详细资料
-func ParseProfile(contents []byte, name string) engine.ParseResult {
+func ParseProfile(contents []byte) engine.ParseResult {
 	profile := model.Profile{}
 	age, err := strconv.Atoi(extractString(contents, ageRe))
 	if err == nil {
 		profile.Age = age
 	}
-
-	profile.Marriage = extractString(contents, marriageRe)
 
 	height, err := strconv.Atoi(extractString(contents, heightRe))
 	if err == nil {
@@ -46,6 +45,7 @@ func ParseProfile(contents []byte, name string) engine.ParseResult {
 	profile.Gender = extractString(contents, genderRe)
 	profile.Xinzuo = extractString(contents, xinzuoRe)
 	profile.Marriage = extractString(contents, marriageRe)
+	profile.Name = extractString(contents, name)
 	//profile.Education = extractString(contents, educationRe)
 	//profile.Occupation = extractString(contents, occupationRe)
 	//profile.Hokou = extractString(contents, hokouRe)
